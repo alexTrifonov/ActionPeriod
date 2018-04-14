@@ -1,0 +1,16 @@
+<hibernate-mapping>
+    <class name="ru.job4j.actionperiod.models.User" table="users">
+        <id name="id" column="id">
+            <generator class="identity"/>
+        </id>
+        <property name="login" column="login"/>
+        <property name="password" column="password"/>
+        <many-to-one name="role"
+                     column="role_id"
+                     class="ru.job4j.actionperiod.models.Role" fetch="join"/>
+        <property name="atWork" column="at_work"/>
+        <property name="workStart" column="work_start"/>
+        <property name="workFull" column="work_full"/>
+        <property name="enabled" column="enabled"/>
+    </class>
+</hibernate-mapping>
