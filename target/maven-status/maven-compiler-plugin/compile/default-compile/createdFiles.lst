@@ -1,0 +1,8 @@
+ru\job4j\actionperiod\controllers\LoginController.class
+ru\job4j\actionperiod\controllers\Start.class
+ru\job4j\actionperiod\crudRepositories\UserRepository.class
+ru\job4j\actionperiod\controllers\AddUserController.class
+ru\job4j\actionperiod\models\Role.class
+ru\job4j\actionperiod\controllers\CalculationTime.class
+ru\job4j\actionperiod\crudRepositories\RoleRepository.class
+ru\job4j\actionperiod\models\User.class
