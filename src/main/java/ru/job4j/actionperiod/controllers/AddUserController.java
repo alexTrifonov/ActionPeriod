@@ -14,6 +14,7 @@ import ru.job4j.actionperiod.models.Role;
 import ru.job4j.actionperiod.models.User;
 
 import java.util.Iterator;
+import java.util.Optional;
 
 /**
  * Adding user to database.
@@ -39,8 +40,10 @@ public class AddUserController {
 
     @RequestMapping(value = "/addUser", method = RequestMethod.POST)
     public String addUser(@RequestParam(name = "username") String login, @RequestParam(name = "password") String password, Model model) {
-        Iterator<User> iterator = userRepository.findByLogin(login).iterator();
-        if (!iterator.hasNext()) {
+        Optional<User> userOptional = userRepository.findByLogin(login);
+        if (userOptional.isPresent()) {
+            model.addAttribute("userExist", USER_EXIST);
+        } else {
             User user = new User();
             user.setLogin(login);
             user.setPassword(passwordEncoder.encode(password));
@@ -49,9 +52,8 @@ public class AddUserController {
             user.setAtWork(false);
             user.setEnabled(true);
             userRepository.save(user);
-        } else {
-            model.addAttribute("userExist", USER_EXIST);
         }
+
         return "login";
     }
 }

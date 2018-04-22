@@ -4,6 +4,7 @@ import org.springframework.data.repository.CrudRepository;
 import ru.job4j.actionperiod.models.User;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Repository for User.
@@ -12,5 +13,5 @@ import java.util.List;
  * @since 12.04.2018.
  */
 public interface UserRepository extends CrudRepository<User, Integer>{
-    List<User> findByLogin(String login);
+    Optional<User> findByLogin(String login);
 }

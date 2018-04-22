@@ -6,6 +6,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ru.job4j.actionperiod.crudRepositories.UserRepository;
+import ru.job4j.actionperiod.models.MessageWorkTime;
 import ru.job4j.actionperiod.models.User;
 
 
@@ -24,7 +25,7 @@ public class CalculationTime {
     @ResponseBody
     public void getStartTime(@RequestParam Long timeStart) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userRepository.findByLogin(auth.getName()).iterator().next();
+        User user = userRepository.findByLogin(auth.getName()).get();
         user.setWorkStart(timeStart);
         user.setAtWork(true);
         userRepository.save(user);
@@ -34,7 +35,7 @@ public class CalculationTime {
     @ResponseBody
     public void getStopTime(@RequestParam Long timeStop) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userRepository.findByLogin(auth.getName()).iterator().next();
+        User user = userRepository.findByLogin(auth.getName()).get();
         long fullTime = user.getWorkFull();
         fullTime += timeStop - user.getWorkStart();
         user.setWorkFull(fullTime);
@@ -45,27 +46,27 @@ public class CalculationTime {
 
     @RequestMapping(value = "/finishTime", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public String getFinishTime(@RequestParam Long timeFinish) {
+    public MessageWorkTime getFinishTime(@RequestParam Long timeFinish) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userRepository.findByLogin(auth.getName()).iterator().next();
-        StringBuilder sb = new StringBuilder();
+        User user = userRepository.findByLogin(auth.getName()).get();
+        MessageWorkTime message = new MessageWorkTime();
         if (user.isAtWork()) {
             long fullTime = user.getWorkFull();
             fullTime += timeFinish - user.getWorkStart();
-            String fullTimeStr = String.format("%02d:%02d:%02d",
-                    fullTime / 1000 / 3600, fullTime / 1000 / 60 % 60, fullTime / 1000 % 60);
             user.setWorkFull(0);
             user.setWorkStart(0);
             user.setAtWork(false);
-            sb.append("{\"fullTime\" : \"").append(fullTimeStr).append("\"}");
+            message.setFullTime(getTimeFormat(fullTime));
         } else {
             long fullTime = user.getWorkFull();
-            String fullTimeStr = String.format("%02d:%02d:%02d",
-                    fullTime / 1000 / 3600, fullTime / 1000 / 60 % 60, fullTime / 1000 % 60);
             user.setWorkFull(0);
-            sb.append("{\"fullTime\" : \"").append(fullTimeStr).append("\"}");
+            message.setFullTime(getTimeFormat(fullTime));
         }
         userRepository.save(user);
-        return sb.toString();
+        return message;
+    }
+
+    private String getTimeFormat(long time) {
+        return String.format("%02d:%02d:%02d", time / 1000 / 3600, time / 1000 / 60 % 60, time / 1000 % 60);
     }
 }

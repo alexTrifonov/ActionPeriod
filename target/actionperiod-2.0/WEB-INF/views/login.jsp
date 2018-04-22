@@ -29,7 +29,7 @@
 
     <div align="right">
         <form action="./addUser" method="get">
-            <button type="submit">Add user</button>
+            <button type="submit">Добавить нового пользователя</button>
         </form>
     </div>
 </body>
