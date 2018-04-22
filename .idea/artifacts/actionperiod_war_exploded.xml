@@ -43,9 +43,12 @@
           <element id="library" level="project" name="Maven: org.apache.commons:commons-lang3:3.7" />
           <element id="library" level="project" name="Maven: jstl:jstl:1.2" />
           <element id="library" level="project" name="Maven: taglibs:standard:1.1.2" />
+          <element id="library" level="project" name="Maven: org.hibernate:hibernate-c3p0:5.2.16.Final" />
           <element id="library" level="project" name="Maven: com.mchange:c3p0:0.9.5.2" />
           <element id="library" level="project" name="Maven: com.mchange:mchange-commons-java:0.2.11" />
-          <element id="library" level="project" name="Maven: org.hibernate:hibernate-c3p0:5.2.16.Final" />
+          <element id="library" level="project" name="Maven: org.apache.commons:commons-dbcp2:2.2.0" />
+          <element id="library" level="project" name="Maven: org.apache.commons:commons-pool2:2.5.0" />
+          <element id="library" level="project" name="Maven: commons-logging:commons-logging:1.2" />
         </element>
       </element>
       <element id="directory" name="META-INF">

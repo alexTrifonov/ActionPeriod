@@ -22,8 +22,11 @@ public class User {
     @ManyToOne()
     @JoinColumn(name = "role_id")
     private Role role;
+    @Column(name = "at_work")
     private boolean atWork;
+    @Column(name = "work_start")
     private long workStart;
+    @Column(name = "work_full")
     private long workFull;
     private boolean enabled;
 

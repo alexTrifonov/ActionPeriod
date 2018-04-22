@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                            http://www.springframework.org/schema/beans/spring-beans.xsd
+                            http://www.springframework.org/schema/security
+                            http://www.springframework.org/schema/security/spring-security.xsd">
+
+    <import resource="applicationContext.xml" />
+    <bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+
+    <security:http auto-config="true">
+        <security:intercept-url pattern="/start" access="hasRole('ROLE_USER')"/>
+        <security:intercept-url pattern="/addUser" access="isAnonymous()"/>
+        <security:form-login login-page="/login"
+                             default-target-url="/start"
+                             authentication-failure-url="/loginFailed"
+                             username-parameter="username"
+                             password-parameter="password"
+                             login-processing-url="/login"
+                             always-use-default-target='true' />
+        <security:logout invalidate-session="true"
+                         logout-success-url="/login?logout"/>
+        <security:csrf disabled="true"/>
+        <security:session-management>
+            <security:concurrency-control max-sessions="1" error-if-maximum-exceeded="true"/>
+        </security:session-management>
+    </security:http>
+
+    <security:authentication-manager>
+        <security:authentication-provider>
+            <security:password-encoder ref="passwordEncoder"/>
+            <security:jdbc-user-service data-source-ref="dataSource"
+                                        users-by-username-query="SELECT login, password, enabled FROM users WHERE login=?"
+                                        authorities-by-username-query="SELECT u.login, r.name from roles as r, users as u
+                                                                        WHERE r.id = u.role_id and u.login=?"/>
+        </security:authentication-provider>
+    </security:authentication-manager>
+
+</beans>

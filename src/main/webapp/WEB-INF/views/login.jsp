@@ -9,6 +9,7 @@
         <h3>Вход под своей учетной записью</h3>
         <c:out value="${error}"></c:out>
         <c:out value="${message}"></c:out>
+        <c:out value="${userExist}"></c:out>
         <form id="formLogin" action="<c:url value="/login" />" method="POST">
             <table>
                 <tr>
